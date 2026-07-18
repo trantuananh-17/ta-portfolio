@@ -8,8 +8,8 @@ export const navigationItems = [
     href: "/#about",
   },
   {
-    label: "Skills",
-    href: "/#skills",
+    label: "Experience",
+    href: "/#experience",
   },
   {
     label: "Projects",
