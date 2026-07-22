@@ -152,7 +152,7 @@ const skillVariants: Variants = {
   },
 };
 
-const AboutSection = () => {
+const About = () => {
   return (
     <section id="about" className="relative px-4 pt-10 pb-24 lg:py-24">
       <motion.div
@@ -257,4 +257,4 @@ const AboutSection = () => {
   );
 };
 
-export default AboutSection;
+export default About;

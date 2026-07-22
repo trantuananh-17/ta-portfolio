@@ -143,7 +143,7 @@ const orbitItemVariants: Variants = {
 const description =
   "I'm a software developer with experience in TypeScript and JavaScript, and expertise in frameworks like React and Express.js.";
 
-const HeroSection = () => {
+const Hero = () => {
   return (
     <section
       id="hero"
@@ -518,4 +518,4 @@ const HeroSection = () => {
   );
 };
 
-export default HeroSection;
+export default Hero;

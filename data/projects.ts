@@ -1,22 +1,6 @@
 export const projects = [
   {
     id: 1,
-    title: "Personal Portfolio",
-    description:
-      "A responsive personal portfolio website designed to showcase my projects, technical skills, and development experience.",
-    technologies: [
-      "TypeScript",
-      "React.js",
-      "Tailwind CSS V4",
-      "Vite",
-      "Motion",
-    ],
-    image: "/projects/project_portfolio.png",
-    demoUrl: "https://portfolio-tadev.vercel.app",
-    githubUrl: "https://github.com/trantuananh-17/Portfolio",
-  },
-  {
-    id: 2,
     title: "E-commerce Microservices",
     description:
       "The project separates core features such as authentication, product management, orders, payments, and notifications into independent services, improving maintainability, scalability, and deployment flexibility.",
@@ -28,10 +12,29 @@ export const projects = [
       "MongoDB",
       "RabbitMQ",
     ],
-    image: "/projects/project_ecommerce.png",
-    demoUrl: "",
-    githubUrl: "",
+    image:
+      "https://shoes-ecommerce.s3.ap-southeast-1.amazonaws.com/images/Screenshot+2026-07-22+162742.png",
+    demoUrl: "https://anhtt-stationery.store/vi",
+    githubUrl: "https://github.com/trantuananh-17/stationery-be",
   },
+  {
+    id: 2,
+    title: "Personal Portfolio",
+    description:
+      "A responsive personal portfolio website designed to showcase my projects, technical skills, and development experience.",
+    technologies: [
+      "TypeScript",
+      "React.js",
+      "Tailwind CSS V4",
+      "Vite",
+      "Motion",
+    ],
+    image:
+      "https://shoes-ecommerce.s3.ap-southeast-1.amazonaws.com/images/Screenshot+2026-07-22+161531.png",
+    demoUrl: "https://portfolio.tranhtuananh-anhtt.site",
+    githubUrl: "https://github.com/trantuananh-17/ta-portfolio",
+  },
+
   {
     id: 3,
     title: "Backend Job Portal",
@@ -45,8 +48,9 @@ export const projects = [
       "Prisma",
       "JWT",
     ],
-    image: "/projects/project_job_portal.png",
+    image:
+      "https://shoes-ecommerce.s3.ap-southeast-1.amazonaws.com/images/job_prj.png",
     demoUrl: "",
-    githubUrl: "",
+    githubUrl: "https://github.com/trantuananh-17/Job-Portal",
   },
 ] as const;

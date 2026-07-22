@@ -134,7 +134,7 @@ const contactItemVariants: Variants = {
   },
 };
 
-const ContactSection = () => {
+const Contact = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSent, setIsSent] = useState(false);
 
@@ -400,4 +400,4 @@ const ContactSection = () => {
   );
 };
 
-export default ContactSection;
+export default Contact;

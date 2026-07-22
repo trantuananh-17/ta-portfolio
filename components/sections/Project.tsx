@@ -74,7 +74,7 @@ const technologyVariants: Variants = {
   },
 };
 
-const ProjectSection = () => {
+const Project = () => {
   return (
     <section id="projects" className="relative  px-4 py-10 lg:py-24">
       <div className="container mx-auto sm:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl">
@@ -207,4 +207,4 @@ const ProjectSection = () => {
   );
 };
 
-export default ProjectSection;
+export default Project;
