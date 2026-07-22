@@ -238,8 +238,8 @@ const Hero = () => {
         >
           <Button size="lg" className="w-full rounded-2xl px-9 py-6 sm:w-auto">
             <motion.a
-              href="/cv/tran-tuan-anh-cv.pdf"
-              download
+              href="/cv/cv_tran_tuan_anh.pdf"
+              download="Tran-Tuan-Anh-CV.pdf"
               whileHover={{
                 scale: 1.04,
                 y: -2,
@@ -300,7 +300,7 @@ const Hero = () => {
 
           <motion.a
             variants={socialVariants}
-            href="https://linkedin.com/"
+            href="https://www.linkedin.com/in/tu%E1%BA%A5n-anh-tr%E1%BA%A7n-260198424/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
@@ -322,7 +322,7 @@ const Hero = () => {
 
           <motion.a
             variants={socialVariants}
-            href="https://github.com/"
+            href="https://github.com/trantuananh-17"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
