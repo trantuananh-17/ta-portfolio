@@ -6,10 +6,8 @@ import { AlertCircle, ArrowUpRight, Mail, MapPin, Send } from "lucide-react";
 import { RiFacebookFill } from "react-icons/ri";
 import { SiZalo } from "react-icons/si";
 
-import {
-  initialContactFormState,
-  sendContactMessage,
-} from "@/app/actions/contact";
+import { sendContactMessage } from "@/app/actions/contact";
+import { initialContactFormState } from "@/lib/contact";
 import { fadeUp, stagger, VIEWPORT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 

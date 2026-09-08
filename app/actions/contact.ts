@@ -3,25 +3,10 @@
 import { headers } from "next/headers";
 import { Resend } from "resend";
 
-type ContactFields = {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-};
+import type { ContactFields, ContactFormState } from "@/lib/contact";
 
-export type ContactFormState = {
-  status: "idle" | "success" | "error";
-  message: string;
-  fieldErrors?: Partial<Record<keyof ContactFields, string>>;
-  /** React 19 tự reset form sau khi action chạy xong, nên phải trả lại giá trị cũ khi lỗi. */
-  values?: ContactFields;
-};
-
-export const initialContactFormState: ContactFormState = {
-  status: "idle",
-  message: "",
-};
+// Chỉ được export async function từ file này — kiểu và state khởi tạo nằm ở
+// `@/lib/contact`. Xem ghi chú ở đó.
 
 const MAX_LENGTHS = {
   name: 100,
