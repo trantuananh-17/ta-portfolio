@@ -9,6 +9,7 @@ import { Header } from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { ThemePresetSwitcher } from "@/components/ui/theme-preset-switcher";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { MotionProvider } from "@/components/providers/motion-provider";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 
 const inter = Inter({
@@ -26,9 +27,51 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = process.env.SITE_URL ?? "https://portfolio.ragenta.cloud";
+
+const siteTitle = "Tran Tuan Anh — Software Engineer";
+const siteDescription =
+  "Portfolio of Tran Tuan Anh, a software engineer building full-stack products with TypeScript, Node.js, React and Next.js.";
+
 export const metadata: Metadata = {
-  title: "Trần Tuấn Anh - Portfolio",
-  description: "Portfolio của Trần Tuấn Anh",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: siteTitle,
+    template: "%s | Tran Tuan Anh",
+  },
+  description: siteDescription,
+  keywords: [
+    "Tran Tuan Anh",
+    "Software Engineer",
+    "Fullstack Developer",
+    "TypeScript",
+    "Node.js",
+    "React",
+    "Next.js",
+    "Portfolio",
+  ],
+  authors: [{ name: "Tran Tuan Anh", url: siteUrl }],
+  creator: "Tran Tuan Anh",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    siteName: "Tran Tuan Anh — Portfolio",
+    title: siteTitle,
+    description: siteDescription,
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 const themePresets = [
@@ -59,11 +102,12 @@ export default async function RootLayout({
 
   return (
     <html
-      lang="vi"
+      lang="en"
       data-theme-preset={theme}
       suppressHydrationWarning
       className={cn(
-        "h-full scroll-smooth antialiased",
+        // scroll-pt-20 để anchor không bị header fixed (h-16) che mất tiêu đề section
+        "h-full scroll-pt-20 scroll-smooth antialiased",
         geistSans.variable,
         geistMono.variable,
         inter.variable,
@@ -77,14 +121,16 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
+          <MotionProvider>
+            <Header />
 
-          {children}
+            {children}
 
-          <Footer />
+            <Footer />
 
-          <ThemePresetSwitcher initialTheme={theme} />
-          <ModeToggle />
+            <ThemePresetSwitcher initialTheme={theme} />
+            <ModeToggle />
+          </MotionProvider>
         </ThemeProvider>
       </body>
     </html>

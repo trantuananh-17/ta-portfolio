@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
+import { motion } from "motion/react";
 import { CircleUserRound, Fingerprint, Rocket } from "lucide-react";
 import {
   BiLogoMongodb,
@@ -14,6 +14,16 @@ import {
   RiTailwindCssFill,
 } from "react-icons/ri";
 import { SiExpress } from "react-icons/si";
+
+import {
+  fadeUp,
+  HOVER_LIFT,
+  HOVER_TRANSITION,
+  stagger,
+  VIEWPORT,
+} from "@/lib/motion";
+
+import { sectionContainer } from "../ui/container";
 
 const abouts = [
   {
@@ -92,78 +102,23 @@ const skills = [
   },
 ];
 
-const sectionVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 40,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.7,
-      ease: "easeOut",
-      staggerChildren: 0.12,
-    },
-  },
-};
+const sectionVariants = stagger(0.08);
 
-const itemVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 30,
-    scale: 0.96,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.55,
-      ease: "easeOut",
-    },
-  },
-};
+const itemVariants = fadeUp;
 
-const skillContainerVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.07,
-      delayChildren: 0.15,
-    },
-  },
-};
+const skillContainerVariants = stagger(0.04, 0.1);
 
-const skillVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-    scale: 0.85,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.4,
-      ease: "easeOut",
-    },
-  },
-};
+const skillVariants = fadeUp;
 
 const About = () => {
   return (
     <section id="about" className="relative px-4 pt-10 pb-24 lg:py-24">
       <motion.div
-        className="container mx-auto sm:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl"
+        className={sectionContainer}
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{
-          once: true,
-          amount: 0.15,
-        }}
+        viewport={VIEWPORT}
       >
         <motion.div variants={itemVariants} className="flex flex-col md:gap-5">
           <h2 className="mb-4 text-center text-2xl font-bold sm:text-3xl md:text-4xl">
@@ -185,27 +140,12 @@ const About = () => {
               <motion.div
                 key={about.id}
                 variants={itemVariants}
-                whileHover={{
-                  y: -6,
-                  scale: 1.02,
-                }}
-                transition={{
-                  duration: 0.25,
-                }}
+                whileHover={HOVER_LIFT}
+                transition={HOVER_TRANSITION}
                 className="group card-hover flex flex-col gap-4 overflow-hidden rounded-lg bg-card p-4 shadow-xs"
               >
                 <div className="flex items-center gap-5">
-                  <motion.span
-                    whileHover={{
-                      rotate: 8,
-                      scale: 1.1,
-                    }}
-                    transition={{
-                      duration: 0.2,
-                    }}
-                  >
-                    {about.icon}
-                  </motion.span>
+                  {about.icon}
 
                   <p className="text-md font-bold text-primary">
                     {about.title}
@@ -228,24 +168,12 @@ const About = () => {
                 key={skill.id}
                 variants={skillVariants}
                 whileHover={{
-                  y: -5,
-                  scale: 1.08,
+                  y: -3,
                 }}
-                transition={{
-                  duration: 0.2,
-                }}
+                transition={HOVER_TRANSITION}
                 className="group flex flex-col items-center gap-2 rounded-md p-3 text-center"
               >
-                <motion.div
-                  whileHover={{
-                    rotate: [0, -8, 8, 0],
-                  }}
-                  transition={{
-                    duration: 0.4,
-                  }}
-                >
-                  {skill.icon}
-                </motion.div>
+                {skill.icon}
 
                 <p className="text-sm">{skill.name}</p>
               </motion.div>

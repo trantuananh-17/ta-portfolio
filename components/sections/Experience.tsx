@@ -1,13 +1,42 @@
 "use client";
-import { motion, type Variants } from "motion/react";
+import { motion } from "motion/react";
+
+import {
+  DURATION,
+  EASE,
+  fadeIn,
+  fadeUp,
+  HOVER_LIFT,
+  HOVER_TRANSITION,
+  stagger,
+  VIEWPORT,
+} from "@/lib/motion";
+
+import { sectionContainer } from "../ui/container";
 
 const experiences = [
   {
-    period: "03/2026 — 06/2026",
-    role: "Full-stack Developer",
-    company: "Global AI",
+    period: "06/2026 — 09/2026",
+    role: "Software Engineer",
+    company: "NYB AI",
     description:
-      "Developed frontend and backend features for TradeWize, including dashboards, APIs, user flows, and data processing. ",
+      "Delivered the promo-code and credit feature end to end across admin APIs, the admin console and the user redeem flow. Built timezone-aware webinar scheduling, hardened Google One Tap sign-in and sign-in analytics, and improved onboarding and chat UX.",
+    technologies: [
+      "TypeScript",
+      "Next.js",
+      "Node.js",
+      "PostgreSQL",
+      "PostHog",
+      "Docker",
+    ],
+    current: true,
+  },
+  {
+    period: "12/2025 — 06/2026",
+    role: "Fullstack Developer",
+    company: "Rocket Global",
+    description:
+      "Worked on TradeWize, a US-based educational trading simulator. Developed frontend and backend features for web and app modules, including APIs, dashboards, user flows and data processing, and refactored existing modules to improve stability.",
     technologies: [
       "TypeScript",
       "React.js",
@@ -16,10 +45,10 @@ const experiences = [
       "Docker",
       "Git",
     ],
-    current: true,
+    current: false,
   },
   {
-    period: "11/2025 — 01/2026",
+    period: "09/2025 — 11/2025",
     role: "Node.js Intern",
     company: "Avada Group",
     description:
@@ -36,65 +65,13 @@ const experiences = [
   },
 ];
 
-const headerVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 30,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
+const headerVariants = fadeUp;
 
-const experienceVariants: Variants = {
-  hidden: (direction: number) => ({
-    opacity: 0,
-    x: direction * 60,
-    y: 20,
-  }),
-  visible: {
-    opacity: 1,
-    x: 0,
-    y: 0,
-    transition: {
-      duration: 0.65,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
+const experienceVariants = fadeUp;
 
-const technologyContainerVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      delayChildren: 0.2,
-      staggerChildren: 0.08,
-    },
-  },
-};
+const technologyContainerVariants = stagger(0.04, 0.15);
 
-const technologyVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    scale: 0.8,
-    y: 8,
-  },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 260,
-      damping: 20,
-    },
-  },
-};
+const technologyVariants = fadeIn;
 
 export const Experience = () => {
   return (
@@ -102,26 +79,22 @@ export const Experience = () => {
       id="experience"
       className="relative overflow-hidden px-4 pt-10 pb-24 lg:py-24"
     >
-      <div className="container mx-auto sm:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl">
+      <div className={sectionContainer}>
         {/* Section Header */}
         <motion.div
           className="flex flex-col md:gap-5"
           variants={headerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{
-            once: true,
-            amount: 0.4,
-          }}
+          viewport={VIEWPORT}
         >
           <h2 className="mb-4 text-center text-2xl font-bold sm:text-3xl md:text-4xl">
-            <span className="text-primary">Experience </span>
-            That
+            My <span className="text-primary">Experience</span>
           </h2>
 
           <p className="mx-auto mb-12 max-w-2xl text-center text-sm text-muted-foreground">
-            A timeline of my professional growth, from curious beginner to
-            senior engineer leading teams and building products at scale.
+            A timeline of my professional journey, from a first internship to
+            shipping production features across the full stack.
           </p>
         </motion.div>
 
@@ -138,33 +111,23 @@ export const Experience = () => {
               scaleY: 1,
               opacity: 1,
             }}
-            viewport={{
-              once: true,
-              amount: 0.1,
-            }}
+            viewport={VIEWPORT}
             transition={{
-              duration: 1.2,
-              ease: [0.22, 1, 0.36, 1],
+              duration: 1.4,
+              ease: EASE,
             }}
           />
 
           {/* Experience Items */}
           <div className="space-y-12">
             {experiences.map((exp, idx) => {
-              const direction = idx % 2 === 0 ? -1 : 1;
-
               return (
                 <motion.div
                   key={`${exp.company}-${exp.period}`}
-                  custom={direction}
                   variants={experienceVariants}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{
-                    once: true,
-                    amount: 0.25,
-                    margin: "0px 0px -80px 0px",
-                  }}
+                  viewport={VIEWPORT}
                   className="relative grid gap-8 md:grid-cols-2"
                 >
                   {/* Timeline Dot */}
@@ -172,54 +135,32 @@ export const Experience = () => {
                     className="absolute top-0 left-0 z-10 h-3 w-3 -translate-x-1/2 rounded-full bg-primary ring-4 ring-background md:left-1/2"
                     initial={{
                       opacity: 0,
-                      scale: 0,
+                      scale: 0.5,
                     }}
                     whileInView={{
                       opacity: 1,
                       scale: 1,
                     }}
-                    viewport={{
-                      once: true,
-                      amount: 0.8,
-                    }}
+                    viewport={VIEWPORT}
                     transition={{
-                      delay: 0.15,
-                      type: "spring",
-                      stiffness: 350,
-                      damping: 18,
+                      delay: 0.1,
+                      duration: DURATION.base,
+                      ease: EASE,
                     }}
                   >
                     {exp.current && (
-                      <>
-                        <motion.span
-                          className="absolute inset-0 rounded-full bg-primary"
-                          animate={{
-                            scale: [1, 2.4],
-                            opacity: [0.7, 0],
-                          }}
-                          transition={{
-                            duration: 1.8,
-                            repeat: Infinity,
-                            ease: "easeOut",
-                          }}
-                        />
-
-                        <motion.span
-                          className="absolute inset-0 rounded-full bg-primary"
-                          animate={{
-                            boxShadow: [
-                              "0 0 0px hsl(var(--primary))",
-                              "0 0 14px hsl(var(--primary))",
-                              "0 0 0px hsl(var(--primary))",
-                            ],
-                          }}
-                          transition={{
-                            duration: 2,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                          }}
-                        />
-                      </>
+                      <motion.span
+                        className="absolute inset-0 rounded-full bg-primary"
+                        animate={{
+                          scale: [1, 1.9],
+                          opacity: [0.5, 0],
+                        }}
+                        transition={{
+                          duration: 2.6,
+                          repeat: Infinity,
+                          ease: "easeOut",
+                        }}
+                      />
                     )}
                   </motion.div>
 
@@ -233,37 +174,12 @@ export const Experience = () => {
                   >
                     <motion.div
                       className="glass rounded-2xl border border-primary/30 p-6 transition-colors duration-300 hover:border-primary/60"
-                      whileHover={{
-                        y: -6,
-                        scale: 1.015,
-                      }}
-                      whileTap={{
-                        scale: 0.99,
-                      }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 280,
-                        damping: 22,
-                      }}
+                      whileHover={HOVER_LIFT}
+                      transition={HOVER_TRANSITION}
                     >
-                      <motion.span
-                        className="text-sm font-medium text-primary"
-                        initial={{
-                          opacity: 0,
-                        }}
-                        whileInView={{
-                          opacity: 1,
-                        }}
-                        viewport={{
-                          once: true,
-                        }}
-                        transition={{
-                          delay: 0.2,
-                          duration: 0.4,
-                        }}
-                      >
+                      <span className="text-sm font-medium text-primary">
                         {exp.period}
-                      </motion.span>
+                      </span>
 
                       <h3 className="mt-2 text-xl font-semibold">{exp.role}</h3>
 
@@ -280,19 +196,12 @@ export const Experience = () => {
                         variants={technologyContainerVariants}
                         initial="hidden"
                         whileInView="visible"
-                        viewport={{
-                          once: true,
-                          amount: 0.5,
-                        }}
+                        viewport={VIEWPORT}
                       >
                         {exp.technologies.map((tech) => (
                           <motion.span
                             key={`${exp.company}-${tech}`}
                             variants={technologyVariants}
-                            whileHover={{
-                              y: -2,
-                              scale: 1.05,
-                            }}
                             className="text-foreground border-border bg-primary/20 rounded-full border px-2 py-1 text-xs font-medium"
                           >
                             {tech}

@@ -1,17 +1,19 @@
 "use client";
 
-import { useState, type FormEvent, type ReactNode } from "react";
-import { motion, type Variants } from "motion/react";
-import {
-  ArrowUpRight,
-  Mail,
-  MapPin,
-  MessageSquareText,
-  Send,
-} from "lucide-react";
+import { useActionState, type ReactNode } from "react";
+import { motion } from "motion/react";
+import { AlertCircle, ArrowUpRight, Mail, MapPin, Send } from "lucide-react";
 import { RiFacebookFill } from "react-icons/ri";
 import { SiZalo } from "react-icons/si";
 
+import {
+  initialContactFormState,
+  sendContactMessage,
+} from "@/app/actions/contact";
+import { fadeUp, stagger, VIEWPORT } from "@/lib/motion";
+import { cn } from "@/lib/utils";
+
+import { sectionContainer } from "../ui/container";
 import Loading from "../ui/loading";
 
 type ContactItem = {
@@ -26,8 +28,8 @@ const contactItems: ContactItem[] = [
   {
     id: 1,
     label: "Email",
-    value: "trantuananh.anhh17@gmail.com",
-    href: "mailto:anhkyohauik17@gmail.com",
+    value: "trantuananh.anhtt17@gmail.com",
+    href: "mailto:trantuananh.anhtt17@gmail.com",
     icon: <Mail className="h-5 w-5" />,
   },
   {
@@ -52,110 +54,38 @@ const contactItems: ContactItem[] = [
   },
 ];
 
-const sectionVariants: Variants = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.14,
-    },
-  },
-};
+const sectionVariants = stagger(0.1);
 
-const headerVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 30,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.65,
-      ease: "easeOut",
-    },
-  },
-};
+const headerVariants = fadeUp;
 
-const leftPanelVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    x: -40,
-  },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.7,
-      ease: "easeOut",
-    },
-  },
-};
+const leftPanelVariants = fadeUp;
 
-const formVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    x: 40,
-  },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.7,
-      ease: "easeOut",
-    },
-  },
-};
+const formVariants = fadeUp;
 
-const contactListVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.15,
-    },
-  },
-};
+const contactListVariants = stagger(0.05, 0.1);
 
-const contactItemVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 18,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.45,
-      ease: "easeOut",
-    },
-  },
+const contactItemVariants = fadeUp;
+
+const inputClassName =
+  "border-input bg-background placeholder:text-muted-foreground/60 focus:border-primary focus:ring-primary/20 h-12 w-full rounded-xl border px-4 text-sm outline-none transition focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/20";
+
+const FieldError = ({ id, message }: { id: string; message?: string }) => {
+  if (!message) return null;
+
+  return (
+    <p id={id} className="text-destructive text-xs">
+      {message}
+    </p>
+  );
 };
 
 const Contact = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSent, setIsSent] = useState(false);
+  const [state, formAction, isPending] = useActionState(
+    sendContactMessage,
+    initialContactFormState,
+  );
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const form = event.currentTarget;
-
-    setIsLoading(true);
-    setIsSent(false);
-
-    setTimeout(() => {
-      form.reset();
-      setIsLoading(false);
-      setIsSent(true);
-
-      setTimeout(() => {
-        setIsSent(false);
-      }, 3000);
-    }, 1500);
-  };
+  const fieldErrors = state.fieldErrors;
 
   return (
     <section
@@ -166,11 +96,8 @@ const Contact = () => {
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{
-          once: true,
-          amount: 0.15,
-        }}
-        className="relative container mx-auto sm:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl"
+        viewport={VIEWPORT}
+        className={cn("relative", sectionContainer)}
       >
         <motion.div
           variants={headerVariants}
@@ -284,7 +211,17 @@ const Contact = () => {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form action={formAction} className="space-y-5">
+              {/* Honeypot: người thật không nhìn thấy, bot điền vào thì bị loại. */}
+              <input
+                type="text"
+                name="company"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="hidden"
+              />
+
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <div className="space-y-2">
                   <label
@@ -299,11 +236,19 @@ const Contact = () => {
                     name="name"
                     type="text"
                     required
+                    maxLength={100}
                     autoComplete="name"
-                    disabled={isLoading}
+                    disabled={isPending}
+                    defaultValue={state.values?.name}
+                    aria-invalid={Boolean(fieldErrors?.name)}
+                    aria-describedby={
+                      fieldErrors?.name ? "name-error" : undefined
+                    }
                     placeholder="Tuấn Anh"
-                    className="border-input bg-background placeholder:text-muted-foreground/60 focus:border-primary focus:ring-primary/20 h-12 w-full rounded-xl border px-4 text-sm outline-none transition focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60"
+                    className={inputClassName}
                   />
+
+                  <FieldError id="name-error" message={fieldErrors?.name} />
                 </div>
 
                 <div className="space-y-2">
@@ -319,11 +264,19 @@ const Contact = () => {
                     name="email"
                     type="email"
                     required
+                    maxLength={200}
                     autoComplete="email"
-                    disabled={isLoading}
+                    disabled={isPending}
+                    defaultValue={state.values?.email}
+                    aria-invalid={Boolean(fieldErrors?.email)}
+                    aria-describedby={
+                      fieldErrors?.email ? "email-error" : undefined
+                    }
                     placeholder="you@example.com"
-                    className="border-input bg-background placeholder:text-muted-foreground/60 focus:border-primary focus:ring-primary/20 h-12 w-full rounded-xl border px-4 text-sm outline-none transition focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60"
+                    className={inputClassName}
                   />
+
+                  <FieldError id="email-error" message={fieldErrors?.email} />
                 </div>
               </div>
 
@@ -340,10 +293,18 @@ const Contact = () => {
                   name="subject"
                   type="text"
                   required
-                  disabled={isLoading}
+                  maxLength={150}
+                  disabled={isPending}
+                  defaultValue={state.values?.subject}
+                  aria-invalid={Boolean(fieldErrors?.subject)}
+                  aria-describedby={
+                    fieldErrors?.subject ? "subject-error" : undefined
+                  }
                   placeholder="Project collaboration"
-                  className="border-input bg-background placeholder:text-muted-foreground/60 focus:border-primary focus:ring-primary/20 h-12 w-full rounded-xl border px-4 text-sm outline-none transition focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60"
+                  className={inputClassName}
                 />
+
+                <FieldError id="subject-error" message={fieldErrors?.subject} />
               </div>
 
               <div className="space-y-2">
@@ -359,27 +320,41 @@ const Contact = () => {
                   name="message"
                   required
                   rows={5}
-                  disabled={isLoading}
+                  maxLength={5000}
+                  disabled={isPending}
+                  defaultValue={state.values?.message}
+                  aria-invalid={Boolean(fieldErrors?.message)}
+                  aria-describedby={
+                    fieldErrors?.message ? "message-error" : undefined
+                  }
                   placeholder="Tell me about your project, idea, or opportunity..."
-                  className="border-input bg-background placeholder:text-muted-foreground/60 focus:border-primary focus:ring-primary/20 w-full resize-none rounded-xl border px-4 py-3 text-sm outline-none transition focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="border-input bg-background placeholder:text-muted-foreground/60 focus:border-primary focus:ring-primary/20 aria-invalid:border-destructive aria-invalid:focus:ring-destructive/20 w-full resize-none rounded-xl border px-4 py-3 text-sm outline-none transition focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60"
                 />
+
+                <FieldError id="message-error" message={fieldErrors?.message} />
               </div>
 
-              {isSent && (
-                <div
-                  role="status"
-                  className="border-primary/20 bg-primary/10 text-primary rounded-xl border px-4 py-3 text-sm"
-                >
-                  Your message has been sent successfully.
-                </div>
-              )}
+              <div aria-live="polite">
+                {state.status === "success" && (
+                  <div className="border-primary/20 bg-primary/10 text-primary rounded-xl border px-4 py-3 text-sm">
+                    {state.message}
+                  </div>
+                )}
+
+                {state.status === "error" && (
+                  <div className="border-destructive/20 bg-destructive/10 text-destructive flex items-start gap-2 rounded-xl border px-4 py-3 text-sm">
+                    <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+                    <span>{state.message}</span>
+                  </div>
+                )}
+              </div>
 
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={isPending}
                 className="bg-primary text-primary-foreground hover:bg-primary/90 flex h-12 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {isLoading ? (
+                {isPending ? (
                   <Loading />
                 ) : (
                   <>

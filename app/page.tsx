@@ -7,7 +7,7 @@ import { Container } from "@/components/ui/container";
 
 export default function Home() {
   return (
-    <Container size="2xl" className="p-0 ">
+    <Container size="2xl" className="p-0">
       <Hero />
       <About />
       <Experience />

@@ -1,91 +1,41 @@
 "use client";
 
 import Image from "next/image";
-import { motion, type Variants } from "motion/react";
+import { motion } from "motion/react";
 import { ExternalLink } from "lucide-react";
 import { LuGithub } from "react-icons/lu";
 
 import { projects } from "@/data/projects";
+import {
+  fadeIn,
+  fadeUp,
+  HOVER_LIFT,
+  HOVER_TRANSITION,
+  stagger,
+  VIEWPORT,
+} from "@/lib/motion";
 
-const sectionVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 40,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.7,
-      ease: "easeOut",
-    },
-  },
-};
+import { sectionContainer } from "../ui/container";
 
-const projectsContainerVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
-    },
-  },
-};
+const sectionVariants = fadeUp;
 
-const projectCardVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 40,
-    scale: 0.96,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.55,
-      ease: "easeOut",
-    },
-  },
-};
+const projectsContainerVariants = stagger(0.08, 0.1);
 
-const technologyContainerVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.05,
-      delayChildren: 0.25,
-    },
-  },
-};
+const projectCardVariants = fadeUp;
 
-const technologyVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    scale: 0.8,
-  },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.3,
-      ease: "easeOut",
-    },
-  },
-};
+const technologyContainerVariants = stagger(0.03, 0.15);
+
+const technologyVariants = fadeIn;
 
 const Project = () => {
   return (
     <section id="projects" className="relative  px-4 py-10 lg:py-24">
-      <div className="container mx-auto sm:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl">
+      <div className={sectionContainer}>
         <motion.div
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{
-            once: true,
-            amount: 0.3,
-          }}
+          viewport={VIEWPORT}
           className="flex flex-col md:gap-5"
         >
           <h2 className="mb-4 text-center text-2xl font-bold sm:text-3xl md:text-4xl">
@@ -102,23 +52,15 @@ const Project = () => {
           variants={projectsContainerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{
-            once: true,
-            amount: 0.1,
-          }}
+          viewport={VIEWPORT}
           className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
         >
           {projects.map((project) => (
             <motion.article
               key={project.id}
               variants={projectCardVariants}
-              whileHover={{
-                y: -8,
-                transition: {
-                  duration: 0.25,
-                  ease: "easeOut",
-                },
-              }}
+              whileHover={HOVER_LIFT}
+              transition={HOVER_TRANSITION}
               className="group card-hover bg-card overflow-hidden rounded-lg shadow-xs"
             >
               <div className="relative h-48 overflow-hidden">
@@ -127,10 +69,10 @@ const Project = () => {
                   alt={project.title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
 
-                <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/10" />
+                <div className="absolute inset-0 bg-black/0 transition-colors duration-700 group-hover:bg-black/10" />
               </div>
 
               <div className="flex h-[calc(100%-12rem)] flex-col gap-4 p-4">
@@ -148,12 +90,12 @@ const Project = () => {
                       rel="noopener noreferrer"
                       aria-label={`View ${project.title} live demo`}
                       whileHover={{
-                        scale: 1.15,
                         y: -2,
                       }}
                       whileTap={{
-                        scale: 0.9,
+                        scale: 0.95,
                       }}
+                      transition={HOVER_TRANSITION}
                       className="text-foreground/80 hover:text-primary transition-colors duration-300"
                     >
                       <ExternalLink size={20} />
@@ -167,12 +109,12 @@ const Project = () => {
                       rel="noopener noreferrer"
                       aria-label={`View ${project.title} source code on GitHub`}
                       whileHover={{
-                        scale: 1.15,
                         y: -2,
                       }}
                       whileTap={{
-                        scale: 0.9,
+                        scale: 0.95,
                       }}
+                      transition={HOVER_TRANSITION}
                       className="text-foreground/80 hover:text-primary transition-colors duration-300"
                     >
                       <LuGithub size={20} />
@@ -188,10 +130,6 @@ const Project = () => {
                     <motion.span
                       key={`${project.title}-${technology}`}
                       variants={technologyVariants}
-                      whileHover={{
-                        y: -2,
-                        scale: 1.05,
-                      }}
                       className="text-foreground border-border bg-primary/20 rounded-full border px-2 py-1 text-xs font-medium"
                     >
                       {technology}

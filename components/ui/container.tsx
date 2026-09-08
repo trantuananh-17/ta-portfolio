@@ -7,6 +7,10 @@ interface ContainerProps {
   size?: "sm" | "md" | "lg" | "xl" | "2xl" | "full" | "default";
 }
 
+/** Chiều rộng dùng chung cho phần nội dung bên trong mỗi <section>. */
+const sectionContainer =
+  "container mx-auto sm:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl";
+
 const sizeClasses = {
   sm: "max-w-4xl",
   md: "max-w-5xl",
@@ -35,4 +39,4 @@ const Container: React.FC<ContainerProps> = ({
   );
 };
 
-export { Container };
+export { Container, sectionContainer };

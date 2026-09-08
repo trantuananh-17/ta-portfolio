@@ -7,6 +7,7 @@ import { RiFacebookCircleFill } from "react-icons/ri";
 
 import AVATAR from "@/assets/imgs/avatar_bg.png";
 import ImageIcon from "@/constants/imageIcon";
+import { DURATION, EASE, fadeUp, HOVER_TRANSITION, stagger } from "@/lib/motion";
 
 import OrbitBotLeft from "../ui/Orbit/OrbitBotLeft";
 import OrbitBottom from "../ui/Orbit/OrbitBottom";
@@ -16,109 +17,41 @@ import OrbitTop from "../ui/Orbit/OrbitTop";
 import OrbitTopLeft from "../ui/Orbit/OrbitTopLeft";
 import { Button } from "../ui/button";
 
-const contentVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      delayChildren: 0.2,
-      staggerChildren: 0.16,
-    },
-  },
-};
+const contentVariants = stagger(0.1, 0.1);
 
-const headingVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.12,
-    },
-  },
-};
+const headingVariants = stagger(0.07);
 
-const itemVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 24,
-    filter: "blur(8px)",
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
-    },
-  },
-};
-
-const paragraphVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.035,
-    },
-  },
-};
-
-const wordVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 10,
-    filter: "blur(3px)",
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: {
-      duration: 0.25,
-      ease: "easeOut",
-    },
-  },
-};
+const itemVariants = fadeUp;
 
 const socialVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 16,
-    scale: 0.8,
+    y: 10,
   },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      duration: 0.45,
-      ease: "easeOut",
+      duration: DURATION.base,
+      ease: EASE,
     },
   },
 };
 
-const orbitContainerVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      delayChildren: 0.25,
-      staggerChildren: 0.15,
-    },
-  },
-};
+const orbitContainerVariants = stagger(0.1, 0.15);
 
 const avatarVariants: Variants = {
   hidden: {
     opacity: 0,
-    scale: 0.4,
-    filter: "blur(10px)",
+    scale: 0.92,
   },
   visible: {
     opacity: 1,
     scale: 1,
-    filter: "blur(0px)",
     transition: {
-      duration: 1.2,
-      delay: 0.25,
-      ease: [0.22, 1, 0.36, 1],
+      duration: DURATION.slow,
+      delay: 0.1,
+      ease: EASE,
     },
   },
 };
@@ -126,16 +59,14 @@ const avatarVariants: Variants = {
 const orbitItemVariants: Variants = {
   hidden: {
     opacity: 0,
-    scale: 0.4,
-    filter: "blur(8px)",
+    scale: 0.94,
   },
   visible: {
     opacity: 1,
     scale: 1,
-    filter: "blur(0px)",
     transition: {
-      duration: 0.65,
-      ease: "easeOut",
+      duration: DURATION.slow,
+      ease: EASE,
     },
   },
 };
@@ -209,7 +140,7 @@ const Hero = () => {
         </motion.h1>
 
         <motion.p
-          variants={paragraphVariants}
+          variants={itemVariants}
           className="
             max-w-xl text-center text-[16px] leading-[22px]
             md:text-[18px] md:leading-[26px]
@@ -217,15 +148,7 @@ const Hero = () => {
             xl:max-w-2xl xl:text-[20px] xl:leading-[28px]
           "
         >
-          {description.split(" ").map((word, index) => (
-            <motion.span
-              key={`${word}-${index}`}
-              variants={wordVariants}
-              className="mr-[0.25em] inline-block"
-            >
-              {word}
-            </motion.span>
-          ))}
+          {description}
         </motion.p>
 
         <motion.div
@@ -236,39 +159,44 @@ const Hero = () => {
             lg:justify-start
           "
         >
-          <Button size="lg" className="w-full rounded-2xl px-9 py-6 sm:w-auto">
-            <motion.a
-              href="/cv/cv_tran_tuan_anh.pdf"
-              download="Tran-Tuan-Anh-CV.pdf"
-              whileHover={{
-                scale: 1.04,
-                y: -2,
-              }}
-              whileTap={{
-                scale: 0.97,
-              }}
-            >
-              Download CV
-            </motion.a>
+          <Button
+            size="lg"
+            className="w-full rounded-2xl px-9 py-6 sm:w-auto"
+            render={
+              <motion.a
+                href="/cv/fullstack_trantuananh.pdf"
+                download="fullstack-trantuananh.pdf"
+                whileHover={{
+                  y: -2,
+                }}
+                whileTap={{
+                  scale: 0.98,
+                }}
+                transition={HOVER_TRANSITION}
+              />
+            }
+          >
+            Download CV
           </Button>
 
           <Button
             variant="outline"
             size="lg"
             className="w-full rounded-2xl px-9 py-6 sm:w-auto"
+            render={
+              <motion.a
+                href="/#contact"
+                whileHover={{
+                  y: -2,
+                }}
+                whileTap={{
+                  scale: 0.98,
+                }}
+                transition={HOVER_TRANSITION}
+              />
+            }
           >
-            <motion.a
-              href="/#contact"
-              whileHover={{
-                scale: 1.04,
-                y: -2,
-              }}
-              whileTap={{
-                scale: 0.97,
-              }}
-            >
-              Contact Me!
-            </motion.a>
+            Contact Me!
           </Button>
         </motion.div>
 
@@ -278,22 +206,22 @@ const Hero = () => {
         >
           <motion.a
             variants={socialVariants}
-            href="https://facebook.com/"
+            href="https://facebook.com/tanhkyo"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Facebook"
             className="
-              bg-background flex items-center justify-center
-              rounded-full border border-gray-800 p-2
+              bg-background border-border hover:border-primary flex
+              items-center justify-center rounded-full border p-2
+              transition-colors
             "
             whileHover={{
-              scale: 1.12,
               y: -3,
-              boxShadow: "0 0 14px rgba(139, 92, 246, 0.6)",
             }}
             whileTap={{
-              scale: 0.92,
+              scale: 0.95,
             }}
+            transition={HOVER_TRANSITION}
           >
             <RiFacebookCircleFill className="text-foreground h-6 w-6" />
           </motion.a>
@@ -305,17 +233,17 @@ const Hero = () => {
             rel="noopener noreferrer"
             aria-label="LinkedIn"
             className="
-              bg-background flex items-center justify-center
-              rounded-full border border-gray-800 p-2
+              bg-background border-border hover:border-primary flex
+              items-center justify-center rounded-full border p-2
+              transition-colors
             "
             whileHover={{
-              scale: 1.12,
               y: -3,
-              boxShadow: "0 0 14px rgba(139, 92, 246, 0.6)",
             }}
             whileTap={{
-              scale: 0.92,
+              scale: 0.95,
             }}
+            transition={HOVER_TRANSITION}
           >
             <FaLinkedin className="text-foreground h-6 w-6" />
           </motion.a>
@@ -327,17 +255,17 @@ const Hero = () => {
             rel="noopener noreferrer"
             aria-label="GitHub"
             className="
-              bg-background flex items-center justify-center
-              rounded-full border border-gray-800 p-2
+              bg-background border-border hover:border-primary flex
+              items-center justify-center rounded-full border p-2
+              transition-colors
             "
             whileHover={{
-              scale: 1.12,
               y: -3,
-              boxShadow: "0 0 14px rgba(139, 92, 246, 0.6)",
             }}
             whileTap={{
-              scale: 0.92,
+              scale: 0.95,
             }}
+            transition={HOVER_TRANSITION}
           >
             <FaGithub className="text-foreground h-6 w-6" />
           </motion.a>
@@ -409,7 +337,7 @@ const Hero = () => {
                   rotate: 360,
                 }}
                 transition={{
-                  duration: 12,
+                  duration: 34,
                   repeat: Infinity,
                   ease: "linear",
                 }}
@@ -438,7 +366,7 @@ const Hero = () => {
                   rotate: -360,
                 }}
                 transition={{
-                  duration: 16,
+                  duration: 46,
                   repeat: Infinity,
                   ease: "linear",
                 }}
@@ -468,7 +396,7 @@ const Hero = () => {
                   rotate: 360,
                 }}
                 transition={{
-                  duration: 22,
+                  duration: 58,
                   repeat: Infinity,
                   ease: "linear",
                 }}
@@ -497,7 +425,7 @@ const Hero = () => {
                   rotate: -360,
                 }}
                 transition={{
-                  duration: 28,
+                  duration: 72,
                   repeat: Infinity,
                   ease: "linear",
                 }}
